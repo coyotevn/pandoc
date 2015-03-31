@@ -1680,6 +1680,8 @@ regLink :: (String -> String -> Attr -> Inlines -> Inlines)
         -> Inlines -> MarkdownParser Inlines
 regLink constructor lab = try $ do
   (src, tit) <- source
+  attr <- option nullAttr $
+          guardEnabled Ext_common_link_attributes >> attributes
   return $ constructor src tit attr lab
 
 -- a link like [this][ref] or [this][] or [this]
@@ -1713,7 +1715,7 @@ referenceLink constructor (lab, raw) = do
                  Just ident -> constructor ('#':ident) "" nullAttr lab
                  Nothing    -> makeFallback
           else makeFallback
-     Just (src,tit) -> constructor src tit attr lab
+     Just ((src,tit), attr) -> constructor src tit attr lab
 
 dropBrackets :: String -> String
 dropBrackets = reverse . dropRB . reverse . dropLB

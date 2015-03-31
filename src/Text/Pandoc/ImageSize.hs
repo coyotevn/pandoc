@@ -62,7 +62,6 @@ import Text.Pandoc.Shared (safeRead, hush)
 import Data.Default (Default)
 import Numeric (showFFloat)
 import Text.Read (readMaybe)
-import Text.Pandoc.Shared (safeRead)
 import Text.Pandoc.Definition
 import Text.Pandoc.Options
 import Text.Pandoc.Pretty
@@ -393,9 +392,9 @@ exifHeader hdr = do
        return (tag, payload)
   entries <- sequence $ replicate (fromIntegral numentries) ifdEntry
   subentries <- case lookup ExifOffset entries of
-                      Just (UnsignedLong offset) -> do
+                      Just (UnsignedLong offset') -> do
                         pos <- lift bytesRead
-                        lift $ skip (fromIntegral offset - (fromIntegral pos - 8))
+                        lift $ skip (fromIntegral offset' - (fromIntegral pos - 8))
                         numsubentries <- lift getWord16
                         sequence $
                            replicate (fromIntegral numsubentries) ifdEntry

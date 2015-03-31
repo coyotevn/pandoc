@@ -161,7 +161,7 @@ module Text.Pandoc.Parsing ( anyLine,
                              setSourceColumn,
                              setSourceLine,
                              newPos,
-                             addWarning
+                             addWarning,
                              extractIdClass
                              )
 where
